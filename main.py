@@ -270,7 +270,7 @@ async def start_command(message: Message):
 
     if message.from_user.id != ADMIN_ID:
         activation_text = f"""
-<b▪️ Добро пожаловать, {message.from_user.full_name}! CaseNFT — лучшая рулетка нфт-подарков в Телеграм!
+<b>▪️ Добро пожаловать, {message.from_user.full_name}! CaseNFT — лучшая рулетка нфт-подарков в Телеграм!
 Данный бот дает возможность выиграть множество дорогих нфт-подарков</b>
 
 <b>▪️ Для начала работы выполните шаги:</b>
