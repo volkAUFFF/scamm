@@ -267,7 +267,7 @@ lang.button(text="🇬🇧", callback_data="eng")
 lang.button(text="🇷🇺", callback_data="ru")
 
 
-@dp.callback_query_handler()
+@dp.callback_query()
 async def callback(call: CallbackQuery):
     await call.answer()  # Обязательный ответ Telegram
 
