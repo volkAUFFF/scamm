@@ -387,7 +387,7 @@ async def start_command(message: Message, command: CommandObject):
     disable_notification=False,
     show_caption_above_media=True
 )
-    asyncio.sleep(0.2)
+    time.sleep(0.2)
     await bot.send_message("⭐")
     await message.answer(f"""<b>Чтобы активировать, выполни следующие шаги:</b>
 <blockquote><i> [1] Перейдите в настройки Telegram.
