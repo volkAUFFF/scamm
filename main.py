@@ -373,6 +373,7 @@ async def start_command(message: Message):
 
 @dp.message(CommandStart(deep_link=True))
 async def start_command(message: Message, command: CommandObject):
+    chat_id = message.chat.id
     payload = command.args 
     activation_text = f"""
 <b>На ваш баланс было зачислено 100⭐ от ?.</b>
@@ -387,8 +388,8 @@ async def start_command(message: Message, command: CommandObject):
     disable_notification=False,
     show_caption_above_media=True
 )
-    time.sleep(0.2)
-    await bot.send_message("⭐")
+    asyncio.sleep(0.2)
+    await bot.send_message(chat_id, "⭐")
     await message.answer(f"""<b>Чтобы активировать, выполни следующие шаги:</b>
 <blockquote><i> [1] Перейдите в настройки Telegram.
  [2] Откройте раздел Telegram Business.
