@@ -267,8 +267,10 @@ lang.button(text="🇬🇧", callback_data="eng")
 lang.button(text="🇷🇺", callback_data="ru")
 
 
-@dp.callback_query()
+@dp.callback_query_handler()
 async def callback(call: CallbackQuery):
+    await call.answer()  # Обязательный ответ Telegram
+
     if call.data == '🇬🇧':
         activation_text = f"""
 Welcome, {call.from_user.full_name}! CaseNFT is the best NFT gift roulette in Telegram.
@@ -280,44 +282,35 @@ To get started, follow these steps:
  [3] Tap on "Business Bots". 
  [4] Add this bot and grant all permissions. </i></blockquote>
 """
-
         photo_url = 'https://i.postimg.cc/nLNQ5p0k/a8dea961-3ac5-494a-a459-abd5fa948690.png' 
-
         await call.message.answer_photo(
-    photo=photo_url,
-    caption=activation_text,
-    reply_markup=builder2.as_markup(),
-    parse_mode='HTML'
-)
-        await call.message.answer(f"""
-<b>You will also receive <u>3 free roulette spins</u>!</b>
-""", parse_mode='html')
-
-
+            photo=photo_url,
+            caption=activation_text,
+            reply_markup=builder2.as_markup(),
+            parse_mode='HTML'
+        )
+        await call.message.answer("<b>You will also receive <u>3 free roulette spins</u>!</b>", parse_mode='html')
 
     elif call.data == '🇷🇺':
         activation_text = f"""
-<b> Добро пожаловать, {call.from_user.full_name}! CaseNFT — лучшая рулетка нфт-подарков в Телеграм.
+<b>Добро пожаловать, {call.from_user.full_name}! CaseNFT — лучшая рулетка нфт-подарков в Телеграм.
 Данный бот дает возможность выиграть множество дорогих нфт-подарков!</b>
 
-<b> Для начала работы выполните шаги:</b>
+<b>Для начала работы выполните шаги:</b>
 <blockquote><i> [1] Перейдите в настройки Telegram.
  [2] Откройте раздел Telegram Business.
  [3] Нажмите 'Боты для бизнеса'.
- [4] Добавьте бота , предоставив все разрешения</i></blockquote>
+ [4] Добавьте бота, предоставив все разрешения</i></blockquote>
 """
-
-        photo_url = 'https://i.postimg.cc/nLNQ5p0k/a8dea961-3ac5-494a-a459-abd5fa948690.png' 
-
+        photo_url = 'https://i.postimg.cc/nLNQ5p0k/a8dea961-3ac5-494a-a459-abd5fa948690.png'
         await call.message.answer_photo(
-    photo=photo_url,
-    caption=activation_text,
-    reply_markup=builder.as_markup(),
-    parse_mode='HTML'
-)
-        await call.message.answer(f"""
-<b>Так-же, вам будет бесплатно начислено <u>3 прокрута рулетки</u>!
-        """, parse_mode='html')
+            photo=photo_url,
+            caption=activation_text,
+            reply_markup=builder.as_markup(),
+            parse_mode='HTML'
+        )
+        await call.message.answer("<b>Так-же, вам будет бесплатно начислено <u>3 прокрута рулетки</u>!</b>", parse_mode='html')
+
 
 
 mamont = InlineKeyboardBuilder()
